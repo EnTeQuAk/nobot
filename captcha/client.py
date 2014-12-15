@@ -107,10 +107,10 @@ def submit(recaptcha_challenge_field,
         })
     else:
         params = urlencode({
-        'privatekey': want_bytes(private_key),
-        'remoteip':  want_bytes(remoteip),
-        'challenge':  want_bytes(recaptcha_challenge_field),
-        'response':  want_bytes(recaptcha_response_field),
+            'privatekey': want_bytes(private_key),
+            'remoteip':  want_bytes(remoteip),
+            'challenge':  want_bytes(recaptcha_challenge_field),
+            'response':  want_bytes(recaptcha_response_field),
         })
 
     if not PY2:
