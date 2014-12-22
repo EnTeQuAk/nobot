@@ -5,6 +5,7 @@ ve/
 build/
 dist/
 *.swo
+*.tox
 /docs/_build
 coverage.xml
 pep8.txt
