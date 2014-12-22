@@ -1,5 +1,6 @@
 import os
 import sys
+import socket
 
 from django import forms
 from django.conf import settings
@@ -17,14 +18,15 @@ from captcha.widgets import ReCaptcha
 
 class ReCaptchaField(forms.CharField):
     default_error_messages = {
-        'captcha_invalid': _('Incorrect, please try again.')
+        'captcha_invalid': _('Incorrect, please try again.'),
+        'captcha_error': _('Error verifying input, please try again.'),
     }
 
     def __init__(self, public_key=None, private_key=None, use_ssl=None,
                  attrs={}, *args, **kwargs):
         """
         ReCaptchaField can accepts attributes which is a dictionary of
-        attributes to be passed ot the ReCaptcha widget class. The widget will
+        attributes to be passed to the ReCaptcha widget class. The widget will
         loop over any options added and create the RecaptchaOptions
         JavaScript variables as specified in
         https://code.google.com/apis/recaptcha/docs/customization.html
@@ -55,17 +57,26 @@ class ReCaptchaField(forms.CharField):
 
     def clean(self, values):
         super(ReCaptchaField, self).clean(values[1])
+
         recaptcha_challenge_value = smart_unicode(values[0])
         recaptcha_response_value = smart_unicode(values[1])
+
 
         if os.environ.get('RECAPTCHA_TESTING', None) == 'True' and \
                 recaptcha_response_value == 'PASSED':
             return values[0]
 
-        check_captcha = client.submit(
-            recaptcha_challenge_value,
-            recaptcha_response_value, private_key=self.private_key,
-            remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
+        try:
+            check_captcha = client.submit(
+                recaptcha_challenge_value,
+                recaptcha_response_value, private_key=self.private_key,
+                remoteip=self.get_remote_ip(), use_ssl=self.use_ssl)
+
+        except socket.error: # Catch timeouts, etc
+            raise ValidationError(
+                self.error_messages['captcha_error']
+            )
+
         if not check_captcha.is_valid:
             raise ValidationError(
                 self.error_messages['captcha_invalid']
