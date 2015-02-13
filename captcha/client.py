@@ -1,36 +1,33 @@
-import django
-if django.VERSION[1] >= 5:
-    import json
-else:
-    from django.utils import simplejson as json
+import json
 
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes, force_text
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
+from django.utils.six.moves import urllib
 
-from captcha._compat import want_bytes, urlencode, Request, urlopen, PY2
 
-DEFAULT_API_SSL_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
-DEFAULT_API_SERVER = "//www.google.com/recaptcha/api"  # made ssl agnostic
-DEFAULT_VERIFY_SERVER = "www.google.com"
+DEFAULT_API_SSL_SERVER = '//www.google.com/recaptcha/api'  # made ssl agnostic
+DEFAULT_API_SERVER = '//www.google.com/recaptcha/api'  # made ssl agnostic
+DEFAULT_VERIFY_SERVER = 'www.google.com'
 if getattr(settings, 'RECAPTCHA_NOCAPTCHA', False):
     DEFAULT_WIDGET_TEMPLATE = 'captcha/widget_nocaptcha.html'
 else:
     DEFAULT_WIDGET_TEMPLATE = 'captcha/widget.html'
 DEFAULT_WIDGET_TEMPLATE_AJAX = 'captcha/widget_ajax.html'
 
-API_SSL_SERVER = getattr(settings, "CAPTCHA_API_SSL_SERVER",
+API_SSL_SERVER = getattr(settings, 'CAPTCHA_API_SSL_SERVER',
                          DEFAULT_API_SSL_SERVER)
-API_SERVER = getattr(settings, "CAPTCHA_API_SERVER", DEFAULT_API_SERVER)
-VERIFY_SERVER = getattr(settings, "CAPTCHA_VERIFY_SERVER",
+API_SERVER = getattr(settings, 'CAPTCHA_API_SERVER', DEFAULT_API_SERVER)
+VERIFY_SERVER = getattr(settings, 'CAPTCHA_VERIFY_SERVER',
                         DEFAULT_VERIFY_SERVER)
 
-if getattr(settings, "CAPTCHA_AJAX", False):
-    WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE",
+if getattr(settings, 'CAPTCHA_AJAX', False):
+    WIDGET_TEMPLATE = getattr(settings, 'CAPTCHA_WIDGET_TEMPLATE',
                               DEFAULT_WIDGET_TEMPLATE_AJAX)
 else:
-    WIDGET_TEMPLATE = getattr(settings, "CAPTCHA_WIDGET_TEMPLATE",
+    WIDGET_TEMPLATE = getattr(settings, 'CAPTCHA_WIDGET_TEMPLATE',
                               DEFAULT_WIDGET_TEMPLATE)
 
 
@@ -47,11 +44,11 @@ def displayhtml(public_key,
                 attrs,
                 use_ssl=False,
                 error=None):
-    """Gets the HTML to display for reCAPTCHA
+    '''Gets the HTML to display for reCAPTCHA
 
     public_key -- The public api key
     use_ssl -- Should the request be sent over ssl?
-    error -- An error message to display (from RecaptchaResponse.error_code)"""
+    error -- An error message to display (from RecaptchaResponse.error_code)'''
 
     error_param = ''
     if error:
@@ -80,7 +77,7 @@ def submit(recaptcha_challenge_field,
            private_key,
            remoteip,
            use_ssl=False):
-    """
+    '''
     Submits a reCAPTCHA request for verification. Returns RecaptchaResponse
     for the request
 
@@ -90,7 +87,7 @@ def submit(recaptcha_challenge_field,
     from the form
     private_key -- your reCAPTCHA private key
     remoteip -- the user's ip address
-    """
+    '''
 
     if not (recaptcha_response_field and recaptcha_challenge_field and
             len(recaptcha_response_field) and len(recaptcha_challenge_field)):
@@ -100,21 +97,18 @@ def submit(recaptcha_challenge_field,
         )
 
     if getattr(settings, 'RECAPTCHA_NOCAPTCHA', False):
-        params = urlencode({
-            'secret': want_bytes(private_key),
-            'response': want_bytes(recaptcha_response_field),
-            'remoteip': want_bytes(remoteip),
+        params = urllib.parse.urlencode({
+            'secret': force_bytes(private_key),
+            'response': force_bytes(recaptcha_response_field),
+            'remoteip': force_bytes(remoteip),
         })
     else:
-        params = urlencode({
-            'privatekey': want_bytes(private_key),
-            'remoteip':  want_bytes(remoteip),
-            'challenge':  want_bytes(recaptcha_challenge_field),
-            'response':  want_bytes(recaptcha_response_field),
+        params = urllib.parse.urlencode({
+            'privatekey': force_bytes(private_key),
+            'remoteip':  force_bytes(remoteip),
+            'challenge':  force_bytes(recaptcha_challenge_field),
+            'response':  force_bytes(recaptcha_response_field),
         })
-
-    if not PY2:
-        params = params.encode('utf-8')
 
     if use_ssl:
         verify_url = 'https://%s/recaptcha/api/verify' % VERIFY_SERVER
@@ -124,18 +118,19 @@ def submit(recaptcha_challenge_field,
     if getattr(settings, 'RECAPTCHA_NOCAPTCHA', False):
         verify_url = 'https://%s/recaptcha/api/siteverify' % VERIFY_SERVER
 
-    req = Request(
+    req = urllib.request.Request(
         url=verify_url,
-        data=params,
+        data=force_bytes(params),
         headers={
             'Content-type': 'application/x-www-form-urlencoded',
             'User-agent': 'reCAPTCHA Python'
         }
     )
 
-    httpresp = urlopen(req)
+    httpresp = urllib.request.urlopen(req)
+
     if getattr(settings, 'RECAPTCHA_NOCAPTCHA', False):
-        data = json.load(httpresp)
+        data = json.load(force_text(httpresp))
         return_code = data['success']
         return_values = [return_code, None]
         if return_code:
@@ -148,10 +143,7 @@ def submit(recaptcha_challenge_field,
 
     httpresp.close()
 
-    if not PY2:
-        return_code = return_code.decode('utf-8')
-
-    if (return_code == "true"):
+    if (str(return_code) == 'true'):
         return RecaptchaResponse(is_valid=True)
     else:
         return RecaptchaResponse(is_valid=False, error_code=return_values[1])
