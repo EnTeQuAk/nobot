@@ -26,7 +26,7 @@ install_requires = [
 
 setup(
     name='django-recaptcha',
-    version='1.0.2',
+    version='1.0.3',
     description='Django recaptcha form field/widget app.',
     long_description=(
         read('README.rst') + read('AUTHORS.rst') + read('CHANGELOG.rst')),
