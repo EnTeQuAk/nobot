@@ -1,11 +1,25 @@
 language: python
-install:
-  - pip install tox 
-script:
-  - tox
-env:
-  - TOXENV=django14
-  - TOXENV=django15
-  - TOXENV=django16
-  - TOXENV=django17
 
+python:
+  - '2.6'
+  - '2.7'
+  - '3.3'
+  - '3.4'
+  - pypy
+
+env:
+  - DJANGO_VERSION=1.7.x
+  - DJANGO_VERSION=1.6.x
+  - DJANGO_VERSION=1.5.x
+  - DJANGO_VERSION=1.4.x
+
+matrix:
+  exclude:
+  - python: '2.6'
+    env: DJANGO_VERSION=1.7.x
+
+install:
+  - pip install tox
+
+script:
+  - tox -e "$TRAVIS_PYTHON_VERSION-$DJANGO_VERSION"
