@@ -44,11 +44,11 @@ def displayhtml(public_key,
                 attrs,
                 use_ssl=False,
                 error=None):
-    '''Gets the HTML to display for reCAPTCHA
+    """Gets the HTML to display for reCAPTCHA
 
     public_key -- The public api key
     use_ssl -- Should the request be sent over ssl?
-    error -- An error message to display (from RecaptchaResponse.error_code)'''
+    error -- An error message to display (from RecaptchaResponse.error_code)"""
 
     error_param = ''
     if error:
@@ -77,7 +77,7 @@ def submit(recaptcha_challenge_field,
            private_key,
            remoteip,
            use_ssl=False):
-    '''
+    """
     Submits a reCAPTCHA request for verification. Returns RecaptchaResponse
     for the request
 
@@ -87,7 +87,7 @@ def submit(recaptcha_challenge_field,
     from the form
     private_key -- your reCAPTCHA private key
     remoteip -- the user's ip address
-    '''
+    """
 
     if not (recaptcha_response_field and recaptcha_challenge_field and
             len(recaptcha_response_field) and len(recaptcha_challenge_field)):
