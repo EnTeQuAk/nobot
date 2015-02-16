@@ -1,34 +1,35 @@
 from django import forms
-from django.conf import settings
 from django.utils.safestring import mark_safe
 
-from captcha import client
+from .client import ReCaptcha, HumanCaptcha
 
 
-class ReCaptcha(forms.widgets.Widget):
-    if getattr(settings, 'RECAPTCHA_NOCAPTCHA', False):
-        recaptcha_response_name = 'g-recaptcha-response'
-        recaptcha_challenge_name = 'g-recaptcha-response'
-    else:
-        recaptcha_challenge_name = 'recaptcha_challenge_field'
-        recaptcha_response_name = 'recaptcha_response_field'
+class ReCaptchaWidget(forms.widgets.Widget):
+    client_class = ReCaptcha
 
-    def __init__(self, public_key=None, use_ssl=None, attrs={}, *args,
-                 **kwargs):
-        self.public_key = public_key if public_key else \
-            settings.RECAPTCHA_PUBLIC_KEY
-        self.use_ssl = use_ssl if use_ssl is not None else getattr(
-            settings, 'RECAPTCHA_USE_SSL', False)
+    def __init__(self, attrs={}, *args, **kwargs):
         self.js_attrs = attrs
-        super(ReCaptcha, self).__init__(*args, **kwargs)
+        self.client = self.client_class()
+
+        # TODO: move to client?
+        if self.client.nocaptcha:
+            self.challenge_field = 'g-recaptcha-response'
+            self.response_field = 'g-recaptcha-response'
+        else:
+            self.challenge_field = 'recaptcha_challenge_field'
+            self.response_field = 'recaptcha_response_field'
+
+        super(ReCaptchaWidget, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
-        return mark_safe(u'%s' % client.displayhtml(
-            self.public_key,
-            self.js_attrs, use_ssl=self.use_ssl))
+        return mark_safe(u'%s' % self.client.render(self.js_attrs))
 
     def value_from_datadict(self, data, files, name):
         return [
-            data.get(self.recaptcha_challenge_name, None),
-            data.get(self.recaptcha_response_name, None)
+            data.get(self.challenge_field, None),
+            data.get(self.response_field, None)
         ]
+
+
+class HumanCaptchaWidget(ReCaptchaWidget):
+    client_class = HumanCaptcha
