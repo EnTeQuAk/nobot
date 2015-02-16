@@ -62,6 +62,7 @@ class ReCaptchaField(forms.CharField):
         recaptcha_response_value = smart_text(values[1])
 
         testing = os.environ.get('RECAPTCHA_TESTING', None)
+
         if testing == 'True' and recaptcha_response_value == 'PASSED':
             return values[0]
 

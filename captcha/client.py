@@ -89,9 +89,9 @@ class ReCaptcha(object):
 
 
 class HumanCaptcha(ReCaptcha):
-    VERIFY_URL = '{scheme}://google.com/recaptcha/api/siteverify'
+    VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
     template = 'captcha/widget_nocaptcha.html'
-    nocaptcha = False
+    nocaptcha = True
 
     def verify(self, challenge, response, remote_ip):
         data = {
@@ -100,13 +100,9 @@ class HumanCaptcha(ReCaptcha):
             'remoteip': force_bytes(remote_ip)
         }
 
-        verify_url = self.VERIFY_URL.format(
-            scheme='https' if self.use_ssl else 'http'
-        )
+        verified = requests.get(self.VERIFY_URL, params=data)
 
-        r = requests.get(verify_url, params=data)
-
-        if r.status_code == 200:
+        if verified.status_code == 200:
             return RecaptchaResponse(is_valid=True, error_code=None)
         else:
             return RecaptchaResponse(is_valid=False, error_code=None)
