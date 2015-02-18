@@ -69,9 +69,9 @@ class ReCaptcha(object):
 
         data = {
             'privatekey': force_bytes(self.secret_key),
-            'remoteip':  force_bytes(remote_ip),
-            'challenge':  force_bytes(challenge),
-            'response':  force_bytes(response),
+            'remoteip': force_bytes(remote_ip),
+            'challenge': force_bytes(challenge),
+            'response': force_bytes(response),
         }
 
         verify_url = self.VERIFY_URL.format(
