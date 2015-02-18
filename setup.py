@@ -15,7 +15,8 @@ test_requires = [
     'pytest-flakes>=0.2',
     'pytest-pep8>=1.0.5',
     'pytest-django>=2.6',
-    'pep8==1.4.6'
+    'pep8==1.4.6',
+    'httpretty>=0.8.4,<0.9'
 ]
 
 
