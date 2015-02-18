@@ -1,4 +1,3 @@
-import os
 import sys
 import socket
 
@@ -38,7 +37,7 @@ class ReCaptchaField(forms.CharField):
             copied_attrs.update(attrs)
 
         self.widget = self.widget_class(attrs=copied_attrs)
-        self.client = self.client_class()
+        self.client = kwargs.pop('client_class', self.client_class)()
         self.required = True
         super(ReCaptchaField, self).__init__(*args, **kwargs)
 
@@ -60,11 +59,6 @@ class ReCaptchaField(forms.CharField):
 
         challenge_value = smart_text(values[0])
         response_value = smart_text(values[1])
-
-        testing = os.environ.get('NOBOT_TESTING', None)
-
-        if testing == 'True' and response_value == 'PASSED':
-            return values[0]
 
         try:
             response = self.client.verify(
