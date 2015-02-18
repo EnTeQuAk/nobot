@@ -17,7 +17,7 @@ RecaptchaResponse = collections.namedtuple(
 
 
 class ReCaptcha(object):
-    VERIFY_URL = '{scheme}://google.com/recaptcha/api/verify'
+    VERIFY_URL = '{scheme}://www.google.com/recaptcha/api/verify'
     API_SERVER = '//www.google.com/recaptcha/api'
     SUPPORTED_LANGUAGES = ('en', 'nl', 'fr', 'de', 'pt', 'ru', 'es', 'tr')
 
