@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.1
+---
+
+* Initial release after refactoring and renaming to `nobot`.
+
+
+Original Changelog of django-recaptcha
+======================================
+
 1.0.3 (2015-01-13)
 ------------------
 
