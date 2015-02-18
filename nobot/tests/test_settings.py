@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from captcha import fields
+from nobot import fields
 from django.forms import Form
 
 
@@ -11,7 +11,7 @@ class TestForm(Form):
 
 class TestCase(unittest.TestCase):
     def setUp(self):
-        os.environ['RECAPTCHA_TESTING'] = 'True'
+        os.environ['NOBOT_TESTING'] = 'True'
 
     def test_envvar_enabled(self):
         form_params = {'recaptcha_response_field': 'PASSED'}
@@ -19,10 +19,10 @@ class TestCase(unittest.TestCase):
         self.assertTrue(form.is_valid())
 
     def test_envvar_disabled(self):
-        os.environ['RECAPTCHA_TESTING'] = 'False'
+        os.environ['NOBOT_TESTING'] = 'False'
         form_params = {'recaptcha_response_field': 'PASSED'}
         form = TestForm(form_params)
         self.assertFalse(form.is_valid())
 
     def tearDown(self):
-        del os.environ['RECAPTCHA_TESTING']
+        del os.environ['NOBOT_TESTING']

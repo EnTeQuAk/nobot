@@ -58,18 +58,18 @@ class ReCaptchaField(forms.CharField):
     def clean(self, values):
         super(ReCaptchaField, self).clean(values[1])
 
-        recaptcha_challenge_value = smart_text(values[0])
-        recaptcha_response_value = smart_text(values[1])
+        challenge_value = smart_text(values[0])
+        response_value = smart_text(values[1])
 
-        testing = os.environ.get('RECAPTCHA_TESTING', None)
+        testing = os.environ.get('NOBOT_TESTING', None)
 
-        if testing == 'True' and recaptcha_response_value == 'PASSED':
+        if testing == 'True' and response_value == 'PASSED':
             return values[0]
 
         try:
             response = self.client.verify(
-                recaptcha_challenge_value,
-                recaptcha_response_value,
+                challenge_value,
+                response_value,
                 remote_ip=self.get_remote_ip())
         except socket.error:
             # Catch timeouts etc.

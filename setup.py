@@ -27,19 +27,19 @@ install_requires = [
 
 
 setup(
-    name='django-recaptcha',
-    version='1.0.3',
+    name='nobot',
+    version='0.1',
     description='Django recaptcha form field/widget app.',
     long_description=(
         read('README.rst') + read('AUTHORS.rst') + read('CHANGELOG.rst')),
-    author='Praekelt Foundation',
-    author_email='dev@praekelt.com',
+    author='Christopher Grebs',
+    author_email='cg@webshox.org',
     install_requires=install_requires,
     extras_require={
         'tests': test_requires,
     },
     license='BSD',
-    url='http://github.com/praekelt/django-recaptcha',
+    url='https://github.com/EnTeQuak/nobot',
     packages=find_packages(),
     include_package_data=True,
     classifiers=[

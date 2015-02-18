@@ -8,9 +8,9 @@ DATABASES = {
 }
 
 INSTALLED_APPS = [
-    'captcha',
+    'nobot',
 ]
 
-RECAPTCHA_PRIVATE_KEY = 'privkey'
-RECAPTCHA_PUBLIC_KEY = 'pubkey'
-RECAPTCHA_USE_SSL = False
+NOBOT_RECAPTCHA_PRIVATE_KEY = 'privkey'
+NOBOT_RECAPTCHA_PUBLIC_KEY = 'pubkey'
+NOBOT_RECAPTCHA_USE_SSL = False

@@ -1,6 +1,14 @@
 Authors
 =======
 
+``nobot`` was previously developed under the name `django-recaptcha` and under the
+Copyright of Praekelt Foundation. The following copyright notice holds true for
+releases before the renaming: "Copyright (c) by Praekelt Foundation
+
+Package Maintainer
+------------------
+* Christopher Grebs
+
 Praekelt Foundation
 -------------------
 * Shaun Sephton
@@ -20,4 +28,3 @@ Other
 * `snnwolf <https://github.com/snnwolf>`_
 * `Adriano Orioli <https://github.com/Aorioli>`_
 * `cdvv7788 <https://github.com/cdvv7788>`_
-

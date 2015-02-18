@@ -27,9 +27,9 @@ class ReCaptcha(object):
     template = 'captcha/widget.html'
 
     def __init__(self, site_key=None, secret_key=None, use_ssl=False):
-        self.site_key = site_key or settings.RECAPTCHA_PUBLIC_KEY
-        self.secret_key = secret_key or settings.RECAPTCHA_PRIVATE_KEY
-        self.use_ssl = use_ssl or settings.RECAPTCHA_USE_SSL
+        self.site_key = site_key or settings.NOBOT_RECAPTCHA_PUBLIC_KEY
+        self.secret_key = secret_key or settings.NOBOT_RECAPTCHA_PRIVATE_KEY
+        self.use_ssl = use_ssl or settings.NOBOT_RECAPTCHA_USE_SSL
 
     def render(self, attrs, error=None):
         if 'lang' not in attrs:
