@@ -11,3 +11,4 @@ coverage.xml
 pep8.txt
 .coverage
 .cache
+htmlcov/
