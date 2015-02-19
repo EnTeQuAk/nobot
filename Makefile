@@ -5,7 +5,6 @@ APP := .
 
 help:
 	@echo "clean-build - remove build artifacts"
-	@echo "clean-pyc - remove Python file artifacts"
 	@echo "develop - install all packages required for development"
 	@echo "lint - check style with flake8"
 	@echo "test - run tests quickly with the default Python"
@@ -14,7 +13,7 @@ help:
 	@echo "tox - Run all tests in a tox container"
 
 
-clean: clean-build clean-pyc
+clean: clean-build
 
 
 develop:
@@ -26,10 +25,11 @@ develop:
 
 
 clean-build:
-	@rm -fr build/ src/build
-	@rm -fr dist/ src/dist
-	@rm -fr *.egg-info src/*.egg-info
-	@rm -fr htmlcov/
+	find . -name "*.pyc" -exec rm {} \;
+	rm -fr build/ src/build
+	rm -fr dist/ src/dist
+	rm -fr *.egg-info src/*.egg-info
+	rm -fr htmlcov/
 
 
 lint:
