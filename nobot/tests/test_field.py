@@ -3,7 +3,7 @@ from django.forms import Form
 from nobot import fields, client
 
 
-class SuccessfulClient(client.ReCaptcha):
+class SuccessfulClient(client.ReCaptchaClient):
     def verify(self, challenge, response, remote_ip):
         return client.RecaptchaResponse(is_valid=True, error_code=None)
 
@@ -14,7 +14,7 @@ class TestForm(Form):
         client_class=SuccessfulClient)
 
 
-class TestClient(object):
+class TestReCaptchaClient(object):
     def test_simple_pass(self):
         form_params = {'recaptcha_response_field': 'PASSED'}
         form = TestForm(form_params)

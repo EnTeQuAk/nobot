@@ -7,7 +7,7 @@ from django.utils.encoding import smart_text
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
-from .client import ReCaptcha, HumanCaptcha
+from .client import ReCaptchaClient, HumanCaptchaClient
 from .widgets import ReCaptchaWidget, HumanCaptchaWidget
 
 
@@ -20,7 +20,7 @@ class ReCaptchaField(forms.CharField):
     default_attrs = {}
 
     widget_class = ReCaptchaWidget
-    client_class = ReCaptcha
+    client_class = ReCaptchaClient
 
     def __init__(self, public_key=None, private_key=None, use_ssl=None,
                  attrs=None, *args, **kwargs):
@@ -77,4 +77,4 @@ class ReCaptchaField(forms.CharField):
 
 class HumanCaptchaField(ReCaptchaField):
     widget_class = HumanCaptchaWidget
-    client_class = HumanCaptcha
+    client_class = HumanCaptchaClient

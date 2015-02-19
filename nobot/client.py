@@ -16,7 +16,7 @@ RecaptchaResponse = collections.namedtuple(
     'is_valid, error_code')
 
 
-class ReCaptcha(object):
+class ReCaptchaClient(object):
     VERIFY_URL = '{scheme}://www.google.com/recaptcha/api/verify'
     API_SERVER = '//www.google.com/recaptcha/api'
     SUPPORTED_LANGUAGES = ('en', 'nl', 'fr', 'de', 'pt', 'ru', 'es', 'tr')
@@ -88,7 +88,7 @@ class ReCaptcha(object):
             return RecaptchaResponse(is_valid=False, error_code=error_code)
 
 
-class HumanCaptcha(ReCaptcha):
+class HumanCaptchaClient(ReCaptchaClient):
     VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
     template = 'captcha/widget_nocaptcha.html'
     nocaptcha = True

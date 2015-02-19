@@ -1,11 +1,11 @@
 from django import forms
 from django.utils.safestring import mark_safe
 
-from .client import ReCaptcha, HumanCaptcha
+from .client import ReCaptchaClient, HumanCaptchaClient
 
 
 class ReCaptchaWidget(forms.widgets.Widget):
-    client_class = ReCaptcha
+    client_class = ReCaptchaClient
 
     def __init__(self, attrs={}, *args, **kwargs):
         self.js_attrs = attrs
@@ -32,4 +32,4 @@ class ReCaptchaWidget(forms.widgets.Widget):
 
 
 class HumanCaptchaWidget(ReCaptchaWidget):
-    client_class = HumanCaptcha
+    client_class = HumanCaptchaClient
