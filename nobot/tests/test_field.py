@@ -1,15 +1,17 @@
+import mock
 from django.forms import Form
 
-from nobot import fields, client
+from nobot.client import ReCaptchaClient, RecaptchaResponse
+from nobot.fields import ReCaptchaField
 
 
-class SuccessfulClient(client.ReCaptchaClient):
+class SuccessfulClient(ReCaptchaClient):
     def verify(self, challenge, response, remote_ip):
-        return client.RecaptchaResponse(is_valid=True, error_code=None)
+        return RecaptchaResponse(is_valid=True, error_code=None)
 
 
 class TestForm(Form):
-    captcha = fields.ReCaptchaField(
+    captcha = ReCaptchaField(
         attrs={'theme': 'white'},
         client_class=SuccessfulClient)
 
@@ -19,3 +21,20 @@ class TestReCaptchaClient(object):
         form_params = {'recaptcha_response_field': 'PASSED'}
         form = TestForm(form_params)
         assert form.is_valid()
+
+    @mock.patch('django.template.loader.render_to_string')
+    def test_render_simple(self, render_to_string, activate_en):
+        client = ReCaptchaClient()
+        client.render({})
+
+        assert render_to_string.called_once_with(
+            'captcha/widget.html',
+            {
+                'api_server': '//www.google.com/recaptcha/api',
+                'public_key': 'pubkey',
+                'lang': 'en',
+                'options': '{"lang": "en"}',
+                'challenge_url': '//www.google.com/recaptcha/api/challenge?k=pubkey&hl=en',  # noqa
+                'noscript_url': '//www.google.com/recaptcha/api/noscript?k=pubkey&hl=en',  # noqa
+            }
+        )

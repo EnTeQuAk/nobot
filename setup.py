@@ -16,14 +16,15 @@ test_requires = [
     'pytest-pep8>=1.0.5',
     'pytest-django>=2.6',
     'pep8==1.4.6',
-    'httpretty>=0.8.4,<0.9'
+    'httpretty>=0.8.4,<0.9',
+    'mock>=1.0.1,<1.1',
 ]
 
 
 install_requires = [
     'Django>=1.4,<1.8',
     'requests>=1.1.0',
-    'six>=1.9.0'
+    'six>=1.9.0',
 ]
 
 
