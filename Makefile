@@ -1,4 +1,4 @@
-.PHONY: clean deps develop docs clean-build lint test coverage coverage-html tox migrate runserver
+.PHONY: clean deps develop clean-build lint test coverage coverage-html tox migrate runserver
 PYTEST_OPTS :=
 COVER := nobot
 APP := .
@@ -9,7 +9,6 @@ help:
 	@echo "develop - install all packages required for development"
 	@echo "lint - check style with flake8"
 	@echo "test - run tests quickly with the default Python"
-	@echo "docs - generate Sphinx HTML documentation, including API docs"
 	@echo "coverage - generate test coverage report"
 	@echo "coverage-html - generate test coverage report, html output"
 	@echo "tox - Run all tests in a tox container"
@@ -26,19 +25,11 @@ develop:
 	@echo ""
 
 
-docs: clean-build
-	pip install --use-wheel "file://`pwd`#egg=nobot[docs]"
-	sphinx-apidoc --force -o docs/source/modules/ src/nobot src/nobot/tests
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
-
-
 clean-build:
 	@rm -fr build/ src/build
 	@rm -fr dist/ src/dist
 	@rm -fr *.egg-info src/*.egg-info
 	@rm -fr htmlcov/
-	$(MAKE) -C docs clean
 
 
 lint:
