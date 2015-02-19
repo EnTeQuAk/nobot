@@ -30,6 +30,14 @@ class TestHumanCaptchaForm(Form):
 
 
 class TestReCaptchaClient(object):
+    def setup(self):
+        self.verify_data = {
+            'privatekey': 'privkey',
+            'remoteip': '127.0.0.1',
+            'challenge': 'test',
+            'response': 'test',
+        }
+
     def test_simple_pass(self):
         form_params = {'recaptcha_response_field': 'PASSED'}
         form = TestReCaptchaForm(form_params)
@@ -91,16 +99,11 @@ class TestReCaptchaClient(object):
 
     @httpretty.activate
     def test_verify_sucess(self):
-        data = {
-            'privatekey': 'privkey',
-            'remoteip': '127.0.0.1',
-            'challenge': 'test',
-            'response': 'test',
-        }
+        args = urlencode(self.verify_data)
 
         httpretty.register_uri(
             httpretty.GET,
-            'https://www.google.com/recaptcha/api/verify?' + urlencode(data),
+            'https://www.google.com/recaptcha/api/verify?' + args,
             body='true\n\n',
             status=200,
             content_type='plain/text'
@@ -112,6 +115,18 @@ class TestReCaptchaClient(object):
 
         assert last_request.path.startswith('/recaptcha/api/verify')
         assert response.is_valid
+
+    @httpretty.activate
+    def test_verify_wrong_arguments(self):
+        client = ReCaptchaClient()
+        response = client.verify('', 'test', '127.0.0.1')
+
+        assert isinstance(
+            httpretty.last_request(),
+            httpretty.core.HTTPrettyRequestEmpty)
+
+        assert not response.is_valid
+        assert response.error_code == 'incorrect-captcha-sol'
 
 
 class TestHumanaptchaClient(object):
