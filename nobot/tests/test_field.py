@@ -14,7 +14,7 @@ class TestForm(Form):
         client_class=SuccessfulClient)
 
 
-class TestCase(object):
+class TestClient(object):
     def test_simple_pass(self):
         form_params = {'recaptcha_response_field': 'PASSED'}
         form = TestForm(form_params)
