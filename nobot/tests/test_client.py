@@ -1,5 +1,7 @@
 import mock
+import httpretty
 from django.forms import Form
+from six.moves.urllib.parse import urlencode
 
 from nobot.client import ReCaptchaClient, HumanCaptchaClient, RecaptchaResponse
 from nobot.fields import ReCaptchaField, HumanCaptchaField
@@ -86,6 +88,30 @@ class TestReCaptchaClient(object):
                 'noscript_url': '//www.google.com/recaptcha/api/noscript?k=pubkey&hl=de&error=foo%20bar',  # noqa
             }
         )
+
+    @httpretty.activate
+    def test_verify_sucess(self):
+        data = {
+            'privatekey': 'privkey',
+            'remoteip': '127.0.0.1',
+            'challenge': 'test',
+            'response': 'test',
+        }
+
+        httpretty.register_uri(
+            httpretty.GET,
+            'https://www.google.com/recaptcha/api/verify?' + urlencode(data),
+            body='true\n\n',
+            status=200,
+            content_type='plain/text'
+        )
+
+        client = ReCaptchaClient()
+        response = client.verify('test', 'test', '127.0.0.1')
+        last_request = httpretty.last_request()
+
+        assert last_request.path.startswith('/recaptcha/api/verify')
+        assert response.is_valid
 
 
 class TestHumanaptchaClient(object):

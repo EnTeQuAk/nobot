@@ -17,7 +17,7 @@ RecaptchaResponse = collections.namedtuple(
 
 
 class ReCaptchaClient(object):
-    VERIFY_URL = '{scheme}://www.google.com/recaptcha/api/verify'
+    VERIFY_URL = 'https://www.google.com/recaptcha/api/verify'
     API_SERVER = '//www.google.com/recaptcha/api'
     SUPPORTED_LANGUAGES = ('en', 'nl', 'fr', 'de', 'pt', 'ru', 'es', 'tr')
 
@@ -26,10 +26,9 @@ class ReCaptchaClient(object):
     nocaptcha = False
     template = 'captcha/widget.html'
 
-    def __init__(self, site_key=None, secret_key=None, use_ssl=False):
+    def __init__(self, site_key=None, secret_key=None):
         self.site_key = site_key or settings.NOBOT_RECAPTCHA_PUBLIC_KEY
         self.secret_key = secret_key or settings.NOBOT_RECAPTCHA_PRIVATE_KEY
-        self.use_ssl = use_ssl or settings.NOBOT_RECAPTCHA_USE_SSL
 
     def render(self, attrs, error=None):
         if 'lang' not in attrs:
@@ -74,11 +73,7 @@ class ReCaptchaClient(object):
             'response': force_bytes(response),
         }
 
-        verify_url = self.VERIFY_URL.format(
-            scheme='https' if self.use_ssl else 'http'
-        )
-
-        r = requests.get(verify_url, params=data)
+        r = requests.get(self.VERIFY_URL, params=data)
 
         return_code, error_code = force_text(r.content).splitlines()
 
