@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.2
+---
+
+* Fixed released packages.
+
+
 0.1
 ---
 
