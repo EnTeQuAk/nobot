@@ -3,6 +3,18 @@ import codecs
 from setuptools import setup, find_packages
 
 
+version = '0.1'
+
+
+if sys.argv[-1] == 'publish':
+    os.system('python setup.py sdist upload')
+    os.system('python setup.py bdist_wheel upload')
+    print('You probably want to also tag the version now:')
+    print('  git tag -a %s -m "version %s"' % (version, version))
+    print('  git push --tags')
+    sys.exit()
+
+
 def read(*parts):
     filename = os.path.join(os.path.dirname(__file__), *parts)
     with codecs.open(filename, encoding='utf-8') as fp:
@@ -30,7 +42,7 @@ install_requires = [
 
 setup(
     name='nobot',
-    version='0.1',
+    version=version,
     description='Django recaptcha form field/widget app.',
     long_description=(
         read('README.rst') + read('AUTHORS.rst') + read('CHANGELOG.rst')),

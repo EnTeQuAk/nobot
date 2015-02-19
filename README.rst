@@ -3,6 +3,7 @@ Nobot
 
 **Django reCAPTCHA form field/widget integration app.**
 
+
 .. image:: https://travis-ci.org/EnTeQuAk/nobot.svg?branch=master
     :target: https://travis-ci.org/EnTeQuAk/nobot
 
@@ -38,6 +39,7 @@ Usage
 
 Field
 ~~~~~
+
 The quickest way to add reCAPTHCA to a form is to use the included ``ReCaptchaField`` field type. A ``ReCaptcha`` widget will be rendered with the field validating itself without any further action required from you. For example::
 
     from django import forms
@@ -56,4 +58,4 @@ The captcha client takes the key/value pairs and writes out the RecaptchaOptions
 Credits
 -------
 
-Originally developed under the name `django-recaptcha <https://github.com/praekelt/django-recaptcha/>`_ by Praekelt Foundation.
+Originally developed under the name `django-recaptcha <https://github.com/praekelt/django-recaptcha/>`_ by Praekelt Foundation. Forked for better testability and extensibility.
