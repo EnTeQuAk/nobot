@@ -45,8 +45,7 @@ setup(
     name='nobot',
     version=version,
     description='Django recaptcha form field/widget app.',
-    long_description=(
-        read('README.rst') + read('AUTHORS.rst') + read('CHANGELOG.rst')),
+    long_description=read('README.rst') + read('AUTHORS.rst'),
     author='Christopher Grebs',
     author_email='cg@webshox.org',
     install_requires=install_requires,
