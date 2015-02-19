@@ -39,7 +39,7 @@ class TestReCaptchaClient(object):
         }
 
     def test_simple_pass(self):
-        form_params = {'recaptcha_response_field': 'PASSED'}
+        form_params = {'recaptcha_response_field': 'test'}
         form = TestReCaptchaForm(form_params)
         assert form.is_valid()
 
@@ -128,10 +128,37 @@ class TestReCaptchaClient(object):
         assert not response.is_valid
         assert response.error_code == 'incorrect-captcha-sol'
 
+    @httpretty.activate
+    def test_verify_error(self):
+        args = urlencode(self.verify_data)
+
+        httpretty.register_uri(
+            httpretty.GET,
+            'https://www.google.com/recaptcha/api/verify?' + args,
+            body='fail\nerror_code\n',
+            status=200,
+            content_type='plain/text'
+        )
+
+        client = ReCaptchaClient()
+        response = client.verify('test', 'test', '127.0.0.1')
+        last_request = httpretty.last_request()
+
+        assert last_request.path.startswith('/recaptcha/api/verify')
+        assert not response.is_valid
+        assert response.error_code == 'error_code'
+
 
 class TestHumanaptchaClient(object):
+    def setup(self):
+        self.verify_data = {
+            'secret': 'privkey',
+            'remoteip': '127.0.0.1',
+            'response': 'test',
+        }
+
     def test_simple_pass(self):
-        form_params = {'g-recaptcha-response': 'PASSED'}
+        form_params = {'g-recaptcha-response': 'test'}
         form = TestHumanCaptchaForm(form_params)
         assert form.is_valid()
 
@@ -188,3 +215,42 @@ class TestHumanaptchaClient(object):
                 'noscript_url': '//www.google.com/recaptcha/api/noscript?k=pubkey&hl=de&error=foo%20bar',  # noqa
             }
         )
+
+    @httpretty.activate
+    def test_verify_sucess(self):
+        args = urlencode(self.verify_data)
+
+        httpretty.register_uri(
+            httpretty.GET,
+            'https://www.google.com/recaptcha/api/siteverify?' + args,
+            body='',
+            status=200,
+            content_type='plain/text'
+        )
+
+        client = HumanCaptchaClient()
+        response = client.verify('test', 'test', '127.0.0.1')
+        last_request = httpretty.last_request()
+
+        assert last_request.path.startswith('/recaptcha/api/siteverify')
+        assert response.is_valid
+
+    @httpretty.activate
+    def test_verify_error(self):
+        args = urlencode(self.verify_data)
+
+        httpretty.register_uri(
+            httpretty.GET,
+            'https://www.google.com/recaptcha/api/siteverify?' + args,
+            body='fail\nerror_code\n',
+            status=400,
+            content_type='plain/text'
+        )
+
+        client = HumanCaptchaClient()
+        response = client.verify('test', 'test', '127.0.0.1')
+        last_request = httpretty.last_request()
+
+        assert last_request.path.startswith('/recaptcha/api/siteverify')
+        assert not response.is_valid
+        assert response.error_code is None
