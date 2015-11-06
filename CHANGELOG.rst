@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.3
+---
+
+* Add support for Django 1.9
+* Add support for Python 3.5
+
+
 0.2
 ---
 
