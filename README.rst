@@ -58,4 +58,4 @@ The captcha client takes the key/value pairs and writes out the RecaptchaOptions
 Credits
 -------
 
-Originally developed under the name `django-recaptcha <https://github.com/praekelt/django-recaptcha/>`_ by Praekelt Foundation. Forked for better testability and extensibility.
+Originally developed under the name `django-recaptcha <https://github.com/praekelt/django-recaptcha/>`_ by Praekelt Consulting. Forked for better testability and extensibility.
