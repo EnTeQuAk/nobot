@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.4.1
+-----
+
+* Fix response verification for human captcha response from google
+
 0.4
 ---
 
