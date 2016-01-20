@@ -34,18 +34,18 @@ class ReCaptchaClient(object):
         if 'lang' not in attrs:
             attrs['lang'] = get_language()[:2]
 
-        args = {
-            'k': self.site_key,
-            'hl': attrs['lang'],
-        }
+        args = collections.OrderedDict((
+            ('k', self.site_key),
+            ('hl', attrs['lang'])
+        ))
 
         if error:
             args['error'] = error
 
         challenge_url = (
-            self.API_SERVER + '/challenge' + urllib.parse.urlencode(args))
+            self.API_SERVER + '/challenge?' + urllib.parse.urlencode(args))
         noscript_url = (
-            self.API_SERVER + '/noscript' + urllib.parse.urlencode(args))
+            self.API_SERVER + '/noscript?' + urllib.parse.urlencode(args))
 
         return render_to_string(
             self.template,
@@ -53,7 +53,7 @@ class ReCaptchaClient(object):
                 'api_server': self.API_SERVER,
                 'public_key': self.site_key,
                 'lang': attrs['lang'],
-                'options': mark_safe(json.dumps(attrs, indent=2)),
+                'options': mark_safe(json.dumps(attrs)),
                 'challenge_url': challenge_url,
                 'noscript_url': noscript_url
             }
