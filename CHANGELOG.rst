@@ -6,7 +6,7 @@ Changelog
 
 * Fix broken `challenge_url` and `noscript_url`
 * Make sure tests actually run and pass
-* Fix language switching by removing mutable default-arg for `js_attrs`
+* Fix language switching by removing occurrences of mutation of passed attributes
 
 0.3
 ---
