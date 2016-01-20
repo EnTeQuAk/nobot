@@ -1,6 +1,12 @@
 Changelog
 =========
 
+0.5
+---
+
+* Remove Python 2.6 support
+* Remove Django 1.5 support
+
 0.4.1
 -----
 

@@ -4,7 +4,7 @@ import codecs
 from setuptools import setup, find_packages
 
 
-version = '0.4.1'
+version = '0.5'
 
 
 if sys.argv[-1] == 'publish':
@@ -65,7 +65,6 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
