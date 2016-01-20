@@ -7,8 +7,8 @@ from .client import ReCaptchaClient, HumanCaptchaClient
 class ReCaptchaWidget(forms.widgets.Widget):
     client_class = ReCaptchaClient
 
-    def __init__(self, attrs={}, *args, **kwargs):
-        self.js_attrs = attrs
+    def __init__(self, attrs=None, *args, **kwargs):
+        self.js_attrs = {} if attrs is None else attrs
         self.client = self.client_class()
 
         # TODO: move to client?
