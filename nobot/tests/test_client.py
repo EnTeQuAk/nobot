@@ -223,7 +223,7 @@ class TestHumanaptchaClient(object):
         httpretty.register_uri(
             httpretty.GET,
             'https://www.google.com/recaptcha/api/siteverify?' + args,
-            body='',
+            body='{"error-codes": [], "success": true}',
             status=200,
             content_type='plain/text'
         )
@@ -242,7 +242,7 @@ class TestHumanaptchaClient(object):
         httpretty.register_uri(
             httpretty.GET,
             'https://www.google.com/recaptcha/api/siteverify?' + args,
-            body='fail\nerror_code\n',
+            body='{"error-codes": [], "success": false}',
             status=400,
             content_type='plain/text'
         )

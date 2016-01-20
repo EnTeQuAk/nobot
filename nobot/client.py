@@ -100,6 +100,8 @@ class HumanCaptchaClient(ReCaptchaClient):
         verified = requests.get(self.VERIFY_URL, params=data)
 
         if verified.status_code == 200:
-            return RecaptchaResponse(is_valid=True, error_code=None)
-        else:
-            return RecaptchaResponse(is_valid=False, error_code=None)
+            data = verified.json()
+            if data['success']:
+                return RecaptchaResponse(is_valid=True, error_code=None)
+
+        return RecaptchaResponse(is_valid=False, error_code=None)
