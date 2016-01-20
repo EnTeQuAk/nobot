@@ -31,12 +31,14 @@ class ReCaptchaClient(object):
         self.secret_key = secret_key or settings.NOBOT_RECAPTCHA_PRIVATE_KEY
 
     def render(self, attrs, error=None):
-        if 'lang' not in attrs:
-            attrs['lang'] = get_language()[:2]
+        options = attrs.copy()
+
+        if 'lang' not in options:
+            options['lang'] = get_language()[:2]
 
         args = collections.OrderedDict((
             ('k', self.site_key),
-            ('hl', attrs['lang'])
+            ('hl', options['lang'])
         ))
 
         if error:
@@ -52,8 +54,8 @@ class ReCaptchaClient(object):
             {
                 'api_server': self.API_SERVER,
                 'public_key': self.site_key,
-                'lang': attrs['lang'],
-                'options': mark_safe(json.dumps(attrs)),
+                'lang': options['lang'],
+                'options': mark_safe(json.dumps(options)),
                 'challenge_url': challenge_url,
                 'noscript_url': noscript_url
             }
