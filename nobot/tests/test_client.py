@@ -243,7 +243,8 @@ class TestHumanaptchaClient(object):
             httpretty.GET,
             'https://www.google.com/recaptcha/api/siteverify?' + args,
             body='{"error-codes": [], "success": false}',
-            status=400,
+            # Google returns 200 even in case of error :-/
+            status=200,
             content_type='plain/text'
         )
 
