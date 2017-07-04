@@ -23,19 +23,19 @@ def read(*parts):
 
 
 test_requires = [
-    'pytest>=2.5.2',
-    'pytest-cov>=1.6',
-    'pytest-flakes>=0.2',
-    'pytest-pep8>=1.0.5',
-    'pytest-django>=2.6',
-    'pep8==1.4.6',
-    'httpretty>=0.8.4,<0.9',
-    'mock>=1.0.1,<1.1',
+    'pytest>=3.1.2',
+    'pytest-cov>=2.5.1',
+    'pytest-flakes>=2.0.0',
+    'pytest-pep8>=1.0.6',
+    'pytest-django>=3.1.2',
+    'pep8==1.7.0',
+    'httpretty>=0.8.14,<0.9',
+    'mock>=2.0.0',
 ]
 
 
 install_requires = [
-    'Django>=1.4,<1.10',
+    'Django>=1.8,<2.0',
     'requests>=1.1.0',
     'six>=1.9.0',
 ]
