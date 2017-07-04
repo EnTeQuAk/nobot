@@ -1,16 +1,16 @@
 
-{# import recaptcha_ajax.js in your body  #} 
+{# import recaptcha_ajax.js in your body  #}
 {# <script type="text/javascript" src="//www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script> #}
 
 <div id="Recap"></div>
 <script type="text/javascript">
-  var RecaptchaOptions = {{options}};
+  var RecaptchaOptions = {{ options }};
   Recaptcha.create("{{ public_key }}",
     "Recap",
     {
-      theme: "red",
+      theme: RecaptchaOptions['theme'] || "red",
       callback: Recaptcha.focus_response_field
-    }, 
+    },
     RecaptchaOptions
   );
 </script>
