@@ -9,7 +9,7 @@ Package Maintainer
 ------------------
 * Christopher Grebs
 
-Praekelt Foundation
+Praekelt Consulting
 -------------------
 * Shaun Sephton
 * Peter Pistorius
