@@ -17,13 +17,13 @@ class SuccessfulHumanCaptchaClient(HumanCaptchaClient):
         return RecaptchaResponse(is_valid=True, error_code=None)
 
 
-class TestReCaptchaForm(Form):
+class ReCaptchaTestForm(Form):
     captcha = ReCaptchaField(
         attrs={'theme': 'white'},
         client_class=SuccessfulReCaptchaClient)
 
 
-class TestHumanCaptchaForm(Form):
+class HumanCaptchaTestForm(Form):
     captcha = HumanCaptchaField(
         attrs={'theme': 'white'},
         client_class=SuccessfulHumanCaptchaClient)
@@ -40,7 +40,7 @@ class TestReCaptchaClient(object):
 
     def test_simple_pass(self):
         form_params = {'recaptcha_response_field': 'test'}
-        form = TestReCaptchaForm(form_params)
+        form = ReCaptchaTestForm(form_params)
         assert form.is_valid()
 
     @mock.patch('nobot.client.render_to_string')
@@ -159,7 +159,7 @@ class TestHumanaptchaClient(object):
 
     def test_simple_pass(self):
         form_params = {'g-recaptcha-response': 'test'}
-        form = TestHumanCaptchaForm(form_params)
+        form = HumanCaptchaTestForm(form_params)
         assert form.is_valid()
 
     @mock.patch('nobot.client.render_to_string')
