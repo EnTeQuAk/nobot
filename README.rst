@@ -54,6 +54,24 @@ The reCAPTCHA widget supports several `Javascript options variables <https://cod
 
 The captcha client takes the key/value pairs and writes out the RecaptchaOptions value in JavaScript.
 
+Testing
+~~~~~~~
+
+To obtain a valid form containing a reCAPTCHA field **offline** one can mock the verify method of ReCaptchaClient or HumanCaptchaClient, i.e.::
+
+    import mock
+    from nobot.client import RecaptchaResponse
+
+    class MyTestClass:
+
+        @mock.patch('nobot.client.HumanCaptchaClient.verify')
+        def test_with_valid_form(self, nobot_mock):
+            nobot_mock.return_value = RecaptchaResponse(is_valid=True, error_code=None)
+
+            # ...
+            # Test your form or view
+            # recaptcha won't 'spoil' test validation offline now
+
 
 Credits
 -------
