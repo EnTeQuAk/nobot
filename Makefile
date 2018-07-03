@@ -19,8 +19,8 @@ clean: clean-build
 develop:
 	@echo "--> Installing python dependencies"
 	pip install --upgrade pip setuptools wheel
-	pip install --use-wheel -e .
-	pip install --use-wheel -e .[tests]
+	pip install -e .
+	pip install -e .[tests]
 	@echo ""
 
 
