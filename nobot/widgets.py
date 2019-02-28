@@ -21,8 +21,8 @@ class ReCaptchaWidget(forms.widgets.Widget):
 
         super(ReCaptchaWidget, self).__init__(*args, **kwargs)
 
-    def render(self, name, value, attrs=None):
-        return mark_safe(u'%s' % self.client.render(self.js_attrs))
+    def render(self, name, value, attrs=None, renderer=None):
+        return mark_safe(u'%s' % self.client.render(self.js_attrs, renderer))
 
     def value_from_datadict(self, data, files, name):
         return [

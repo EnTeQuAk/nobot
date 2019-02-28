@@ -3,7 +3,7 @@ import collections
 
 import requests
 from django.conf import settings
-from django.template.loader import render_to_string
+from django.forms.renderers import get_default_renderer
 from django.utils.encoding import force_bytes, force_text
 from django.utils.safestring import mark_safe
 from django.utils.translation import get_language
@@ -30,7 +30,7 @@ class ReCaptchaClient(object):
         self.site_key = site_key or settings.NOBOT_RECAPTCHA_PUBLIC_KEY
         self.secret_key = secret_key or settings.NOBOT_RECAPTCHA_PRIVATE_KEY
 
-    def render(self, attrs, error=None):
+    def render(self, attrs, error=None, renderer=None):
         options = attrs.copy()
 
         if 'lang' not in options:
@@ -49,7 +49,9 @@ class ReCaptchaClient(object):
         noscript_url = (
             self.API_SERVER + '/noscript?' + urllib.parse.urlencode(args))
 
-        return render_to_string(
+        if renderer is None:
+            renderer = get_default_renderer()
+        return renderer.render(
             self.template,
             {
                 'api_server': self.API_SERVER,
