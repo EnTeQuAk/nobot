@@ -25,17 +25,15 @@ def read(*parts):
 test_requires = [
     'pytest>=3.1.2',
     'pytest-cov>=2.5.1',
-    'pytest-flakes>=2.0.0',
-    'pytest-pep8>=1.0.6',
+    'pytest-flake8',
     'pytest-django>=3.1.2',
-    'pep8==1.7.0',
-    'httpretty>=0.8.14,<0.9',
+    'httpretty>=1.0.2',
     'mock>=2.0.0',
 ]
 
 
 install_requires = [
-    'Django>=1.8,<2.0',
+    'Django>=1.8,<2.3',
     'requests>=1.1.0',
     'six>=1.9.0',
 ]
@@ -67,10 +65,9 @@ setup(
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Programming Language :: Python :: Implementation :: CPython',
         'Framework :: Django',

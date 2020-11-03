@@ -43,15 +43,15 @@ class TestReCaptchaClient(object):
         form = ReCaptchaTestForm(form_params)
         assert form.is_valid()
 
-    @mock.patch('nobot.client.render_to_string')
-    def test_render_simple(self, render_to_string, activate_en):
+    def test_render_simple(self, activate_en):
         client = ReCaptchaClient()
 
         assert not client.nocaptcha
 
-        client.render({})
+        renderer = mock.MagicMock()
+        client.render({}, renderer=renderer)
 
-        render_to_string.assert_called_once_with(
+        renderer.render.assert_called_once_with(
             'captcha/widget.html',
             {
                 'api_server': '//www.google.com/recaptcha/api',
@@ -63,12 +63,12 @@ class TestReCaptchaClient(object):
             }
         )
 
-    @mock.patch('nobot.client.render_to_string')
-    def test_render_has_error(self, render_to_string, activate_en):
+    def test_render_has_error(self, activate_en):
         client = ReCaptchaClient()
-        client.render({}, 'foo bar')
+        renderer = mock.MagicMock()
+        client.render({}, 'foo bar', renderer=renderer)
 
-        render_to_string.assert_called_once_with(
+        renderer.render.assert_called_once_with(
             'captcha/widget.html',
             {
                 'api_server': '//www.google.com/recaptcha/api',
@@ -80,12 +80,12 @@ class TestReCaptchaClient(object):
             }
         )
 
-    @mock.patch('nobot.client.render_to_string')
-    def test_render_uses_language(self, render_to_string, activate_en):
+    def test_render_uses_language(self, activate_en):
         client = ReCaptchaClient()
-        client.render({'lang': 'de'}, 'foo bar')
+        renderer = mock.MagicMock()
+        client.render({'lang': 'de'}, 'foo bar', renderer=renderer)
 
-        render_to_string.assert_called_once_with(
+        renderer.render.assert_called_once_with(
             'captcha/widget.html',
             {
                 'api_server': '//www.google.com/recaptcha/api',
@@ -162,15 +162,15 @@ class TestHumanaptchaClient(object):
         form = HumanCaptchaTestForm(form_params)
         assert form.is_valid()
 
-    @mock.patch('nobot.client.render_to_string')
-    def test_render_simple(self, render_to_string, activate_en):
+    def test_render_simple(self, activate_en):
         client = HumanCaptchaClient()
 
         assert client.nocaptcha
 
-        client.render({})
+        renderer = mock.MagicMock()
+        client.render({}, renderer=renderer)
 
-        render_to_string.assert_called_once_with(
+        renderer.render.assert_called_once_with(
             'captcha/widget_nocaptcha.html',
             {
                 'api_server': '//www.google.com/recaptcha/api',
@@ -182,12 +182,12 @@ class TestHumanaptchaClient(object):
             }
         )
 
-    @mock.patch('nobot.client.render_to_string')
-    def test_render_has_error(self, render_to_string, activate_en):
+    def test_render_has_error(self, activate_en):
         client = HumanCaptchaClient()
-        client.render({}, 'foo bar')
+        renderer = mock.MagicMock()
+        client.render({}, 'foo bar', renderer=renderer)
 
-        render_to_string.assert_called_once_with(
+        renderer.render.assert_called_once_with(
             'captcha/widget_nocaptcha.html',
             {
                 'api_server': '//www.google.com/recaptcha/api',
@@ -199,12 +199,12 @@ class TestHumanaptchaClient(object):
             }
         )
 
-    @mock.patch('nobot.client.render_to_string')
-    def test_render_uses_language(self, render_to_string, activate_en):
+    def test_render_uses_language(self,  activate_en):
         client = HumanCaptchaClient()
-        client.render({'lang': 'de'}, 'foo bar')
+        renderer = mock.MagicMock()
+        client.render({'lang': 'de'}, 'foo bar', renderer=renderer)
 
-        render_to_string.assert_called_once_with(
+        renderer.render.assert_called_once_with(
             'captcha/widget_nocaptcha.html',
             {
                 'api_server': '//www.google.com/recaptcha/api',
