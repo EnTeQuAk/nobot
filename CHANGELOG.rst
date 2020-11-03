@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.7
+---
+
+Add language support and add 'async defer' to iframe / script tags. Fixes https://github.com/EnTeQuAk/nobot/issues/2
+
 0.6
 ---
 
