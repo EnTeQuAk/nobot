@@ -25,11 +25,9 @@ def read(*parts):
 test_requires = [
     'pytest>=3.1.2',
     'pytest-cov>=2.5.1',
-    'pytest-flakes>=2.0.0',
-    'pytest-pep8>=1.0.6',
+    'pytest-flake8',
     'pytest-django>=3.1.2',
-    'pep8==1.7.0',
-    'httpretty>=0.8.14,<0.9',
+    'httpretty>=1.0.2',
     'mock>=2.0.0',
 ]
 
