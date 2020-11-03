@@ -1,4 +1,4 @@
-<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src='https://www.google.com/recaptcha/api.js{% if lang %}?hl={{ lang }}{% endif %}' async defer></script>
 <script type="text/javascript">
     var DjangoRecaptchaOptions = {{options}};
     if (typeof RecaptchaOptions !== 'object') {
@@ -14,7 +14,7 @@
   <div style="width: 302px; height: 352px;">
     <div style="width: 302px; height: 352px; position: relative;">
       <div style="width: 302px; height: 352px; position: absolute;">
-        <iframe src="https://www.google.com/recaptcha/api/fallback?k={{ public_key }}"
+        <iframe src="https://www.google.com/recaptcha/api/fallback?k={{ public_key }}{% if lang %}&amp;hl={{ lang }}{% endif %}"
                 frameborder="0" scrolling="no"
                 style="width: 302px; height:352px; border-style: none;">
         </iframe>
