@@ -33,7 +33,7 @@ test_requires = [
 
 
 install_requires = [
-    'Django>=1.8,<2.3',
+    'Django>=2.2,<4.0',
     'requests>=1.1.0',
     'six>=1.9.0',
 ]
@@ -62,12 +62,11 @@ setup(
         'Intended Audience :: Developers',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Programming Language :: Python :: Implementation :: CPython',
         'Framework :: Django',
